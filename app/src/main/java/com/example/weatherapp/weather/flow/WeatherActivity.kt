@@ -36,7 +36,12 @@ class WeatherActivity : BaseActivity() {
 
     private fun bind() {
         weatherViewModel.currentWeather.observe(this) { city ->
-
+            locationName.text = city.locationName
+            temperature.text = city.temperature.temperature.toString()
+            description.text = city.weather.description
+            maxMinTemperature.text =
+                "${city.temperature.temperatureMax} / ${city.temperature.temperatureMin}"
+            feelsLike.text = "Feels like: ${city.temperature.feelsLike}"
         }
         weatherViewModel.networkStatus.observe(this) {
             when (it) {

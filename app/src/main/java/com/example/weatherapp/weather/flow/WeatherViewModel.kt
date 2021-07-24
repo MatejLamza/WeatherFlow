@@ -2,7 +2,7 @@ package com.example.weatherapp.weather.flow
 
 import androidx.lifecycle.*
 import com.example.weatherapp.utils.NetworkStatusListener
-import com.example.weatherapp.weather.remote.model.CityNetwork
+import com.example.weatherapp.weather.domain.City
 import com.example.weatherapp.weather.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -13,8 +13,8 @@ class WeatherViewModel(
     private val networkStatusListener: NetworkStatusListener
 ) : ViewModel() {
 
-    private val _currentWeather = MutableLiveData<CityNetwork>()
-    val currentWeather: LiveData<CityNetwork> = _currentWeather
+    private val _currentWeather = MutableLiveData<City>()
+    val currentWeather: LiveData<City> = _currentWeather
 
     val networkStatus = networkStatusListener.networkStatus
         .asLiveData(Dispatchers.IO)
