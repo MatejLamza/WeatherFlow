@@ -2,6 +2,7 @@ package com.example.weatherapp.di.modules
 
 import com.example.weatherapp.BuildConfig
 import com.example.weatherapp.di.Qualifiers
+import com.example.weatherapp.utils.NetworkStatusListener
 import com.example.weatherapp.weather.remote.WeatherAPI
 import com.example.weatherapp.weather.remote.interceptor.AuthInterceptor
 import com.google.gson.Gson
@@ -47,4 +48,5 @@ val networkModule: Module = module {
 
 
     single { get<Retrofit>().create(WeatherAPI::class.java) }
+    single { NetworkStatusListener(context = get()) }
 }
