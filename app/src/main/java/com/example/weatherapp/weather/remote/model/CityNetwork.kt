@@ -2,7 +2,7 @@ package com.example.weatherapp.weather.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class City(
+data class CityNetwork(
     @SerializedName("coord")
     val cordinates: Cordinates,
     @SerializedName("weather")
