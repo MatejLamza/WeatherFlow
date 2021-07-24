@@ -2,8 +2,10 @@ package com.example.weatherapp.weather.flow
 
 import android.os.Bundle
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
 import com.example.weatherapp.common.mvvm.BaseActivity
+import kotlinx.coroutines.delay
 
 class WeatherActivity : BaseActivity() {
 
@@ -12,7 +14,10 @@ class WeatherActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
         bind()
-        weatherViewModel.getCurrentWeather("Zagreb")
+        lifecycleScope.launchWhenCreated {
+            delay(10000)
+            weatherViewModel.getCurrentWeather("Zagreb")
+        }
     }
 
     private fun bind() {

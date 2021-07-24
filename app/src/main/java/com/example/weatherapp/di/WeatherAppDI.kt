@@ -1,6 +1,7 @@
 package com.example.weatherapp.di
 
 import android.app.Application
+import com.example.weatherapp.di.modules.appModule
 import com.example.weatherapp.di.modules.networkModule
 import com.example.weatherapp.di.modules.repositoryModule
 import com.example.weatherapp.di.modules.viewModelModule
@@ -16,7 +17,8 @@ class WeatherAppDI(private val application: Application) {
     private val modules: List<Module> = listOf(
         networkModule,
         repositoryModule,
-        viewModelModule
+        viewModelModule,
+        appModule
     )
 
     fun initialize() {

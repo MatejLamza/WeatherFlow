@@ -20,6 +20,10 @@ buildscript {
         retrofitSerializationVersion = '2.9.0'
         gsonVersion = '2.8.6'
 
+        //Flipper
+        flipperVersion = '0.99.0'
+        soLoaderVersion = '0.10.1'
+
     }
     repositories {
         google()
