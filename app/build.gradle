@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
 }
 
+apply plugin: 'kotlin-android-extensions'
+
+
 android {
     compileSdk 30
     buildToolsVersion "30.0.3"
@@ -75,6 +78,10 @@ dependencies {
     debugImplementation "com.facebook.flipper:flipper-network-plugin:$flipperVersion"
 
     releaseImplementation "com.facebook.flipper:flipper-noop:$flipperVersion"
+
+    //UI
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "com.google.android:flexbox:$flexboxVersion"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

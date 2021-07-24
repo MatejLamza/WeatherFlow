@@ -24,6 +24,9 @@ buildscript {
         flipperVersion = '0.99.0'
         soLoaderVersion = '0.10.1'
 
+        //UI
+        materialVersion = '1.2.+'
+        flexboxVersion = '2.0.1'
     }
     repositories {
         google()
