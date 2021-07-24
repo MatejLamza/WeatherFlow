@@ -5,11 +5,11 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import java.util.concurrent.atomic.AtomicBoolean
 
-class StateLiveData<T>(private val singleObserver: Boolean = false) : MediatorLiveData<State<T>>() {
+class StateLiveData(private val singleObserver: Boolean = false) : MediatorLiveData<State>() {
 
     private val pending: AtomicBoolean = AtomicBoolean(false)
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<in State<T>>) {
+    override fun observe(owner: LifecycleOwner, observer: Observer<in State>) {
         super.observe(owner, if (!singleObserver) observer else Observer {
             if (pending.compareAndSet(true, false)) {
                 observer.onChanged(it)
@@ -17,7 +17,7 @@ class StateLiveData<T>(private val singleObserver: Boolean = false) : MediatorLi
         })
     }
 
-    override fun setValue(value: State<T>?) {
+    override fun setValue(value: State?) {
         pending.set(true)
         super.setValue(value)
     }

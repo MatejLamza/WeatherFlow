@@ -1,11 +1,10 @@
 package com.example.weatherapp.weather.flow
 
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.widget.SearchView
 import com.example.weatherapp.R
 import com.example.weatherapp.common.mvvm.BaseActivity
-import com.example.weatherapp.common.state.NetworkStatus
 import kotlinx.android.synthetic.main.activity_weather.*
 
 class WeatherActivity : BaseActivity() {
@@ -14,6 +13,7 @@ class WeatherActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
+        trackInternetConnection()
         setupUI()
         bind()
     }
@@ -43,16 +43,9 @@ class WeatherActivity : BaseActivity() {
                 "${city.temperature.temperatureMax} / ${city.temperature.temperatureMin}"
             feelsLike.text = "Feels like: ${city.temperature.feelsLike}"
         }
-        weatherViewModel.networkStatus.observe(this) {
-            when (it) {
-                is NetworkStatus.NotConnected -> Toast.makeText(
-                    this,
-                    "No internet connection",
-                    Toast.LENGTH_LONG
-                ).show()
-                is NetworkStatus.Connected -> Toast.makeText(this, "Connected", Toast.LENGTH_LONG)
-                    .show()
-            }
+        weatherViewModel.location.observe(this) {
+            Log.d("bbb", "Dobio sam lokaciju")
+            weatherViewModel.getCurrentWeatherForCordinates(it.latitude, it.longitude)
         }
     }
 }

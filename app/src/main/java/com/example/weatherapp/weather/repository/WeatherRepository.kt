@@ -5,4 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
     suspend fun fetchCurrentWeather(city: String, units: String = "metric"): Flow<City>
+    suspend fun fetchCurrentWeatherForCordinates(
+        longitude: Double,
+        latitude: Double,
+        units: String = "metric"
+    ): Flow<City>
 }

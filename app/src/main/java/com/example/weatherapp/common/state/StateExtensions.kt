@@ -17,11 +17,11 @@ fun exceptionHandler(onError: ((Throwable) -> Unit)) =
         onError(exception)
     }
 
-fun exceptionHandler(data: MutableLiveData<State<Any>>? = null) =
+fun exceptionHandler(data: MutableLiveData<State>? = null) =
     exceptionHandler { data?.postValue(Error(it)) }
 
 fun ViewModel.launchWithState(
-    data: MutableLiveData<State<Any>>,
+    data: MutableLiveData<State>,
     onLoading: (() -> Unit)? = { data.value = Loading },
     onError: ((Throwable) -> Unit)? = { data.value = Error(it) },
     onDone: (() -> Unit)? = { data.value = Done() },
@@ -34,4 +34,12 @@ fun ViewModel.launchWithState(
     onLoading?.invoke()
     block(this)
     onDone?.invoke()
+}
+
+fun ViewModel.launch(
+    context: CoroutineContext = exceptionHandler(null),
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    block: suspend CoroutineScope.() -> Unit
+) = viewModelScope.launch(context, start) {
+    block(this)
 }
