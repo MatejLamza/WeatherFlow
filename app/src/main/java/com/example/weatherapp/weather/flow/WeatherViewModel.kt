@@ -1,20 +1,27 @@
 package com.example.weatherapp.weather.flow
 
+import android.location.Location
 import androidx.lifecycle.*
+import com.example.weatherapp.common.state.State
+import com.example.weatherapp.common.state.StateLiveData
 import com.example.weatherapp.common.state.launch
+import com.example.weatherapp.common.state.launchWithState
 import com.example.weatherapp.utils.LocationHelper
 import com.example.weatherapp.utils.NetworkStatusListener
 import com.example.weatherapp.weather.domain.City
 import com.example.weatherapp.weather.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class WeatherViewModel(
     private val weatherRepo: WeatherRepository,
     networkStatusListener: NetworkStatusListener,
-    locationHelper: LocationHelper
+    private val locationHelper: LocationHelper
 ) : ViewModel() {
+
+    private val _state = StateLiveData()
+    val state: LiveData<State> = _state
 
     private val _currentWeather = MutableLiveData<City>()
     val currentWeather: LiveData<City> = _currentWeather
@@ -22,21 +29,43 @@ class WeatherViewModel(
     val networkStatus = networkStatusListener.networkStatus
         .asLiveData(Dispatchers.IO)
 
-    val location = locationHelper.getLocation().asLiveData(Dispatchers.IO)
+    val location = MutableLiveData<Location>()
 
-    fun getCurrentWeather(city: String, units: String = "metric") {
-        viewModelScope.launch {
-            weatherRepo.fetchCurrentWeather(city, units).collect { cityNetwork ->
+    init {
+        refreshLocation()
+    }
+
+    fun getCurrentWeather(city: String) {
+        launchWithState(_state) {
+            weatherRepo.fetchCurrentWeather(city).collect { cityNetwork ->
                 _currentWeather.value = cityNetwork
             }
         }
     }
 
-    //TODO Check if user has location enabled
-    fun getCurrentWeatherForCordinates(latitude: Double, longitude: Double) {
+    fun refreshLocation() {
         launch {
-            weatherRepo.fetchCurrentWeatherForCordinates(longitude, latitude).collect {
-                _currentWeather.value = it
+            locationHelper.getLocation().catch { e -> _state.postError(e) }.collect {
+                location.value = it
+            }
+        }
+    }
+
+    val updateCurrentLocation = object : MediatorLiveData<Boolean>() {
+        init {
+            addSource(location) {
+                process(loc = it)
+            }
+        }
+
+        private fun process(loc: Location? = location.value) {
+            if (loc != null) {
+                launch {
+                    weatherRepo.fetchCurrentWeatherForCordinates(loc.longitude, loc.longitude)
+                        .collect {
+                            _currentWeather.value = it
+                        }
+                }
             }
         }
     }
