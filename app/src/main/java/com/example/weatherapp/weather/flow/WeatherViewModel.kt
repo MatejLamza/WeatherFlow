@@ -23,7 +23,7 @@ class WeatherViewModel(
     val networkStatus = networkStatusListener.networkStatus
         .asLiveData(Dispatchers.IO)
 
-    val location = locationHelper.location.asLiveData(Dispatchers.IO)
+    val location = locationHelper.getLocation().asLiveData(Dispatchers.IO)
 
     fun getCurrentWeather(city: String, units: String = "metric") {
         viewModelScope.launch {
@@ -33,6 +33,7 @@ class WeatherViewModel(
         }
     }
 
+    //TODO Check if user has location enabled
     fun getCurrentWeatherForCordinates(latitude: Double, longitude: Double) {
         launch {
             weatherRepo.fetchCurrentWeatherForCordinates(longitude, latitude).collect {
