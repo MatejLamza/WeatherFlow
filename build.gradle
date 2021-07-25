@@ -18,6 +18,10 @@ buildscript {
         retrofitVersion = '2.6.1'
         retrofitSerializationVersion = '2.9.0'
         gsonVersion = '2.8.6'
+        kotsonVersion = '2.5.0'
+        okhttpLoggingVersion = '4.3.1'
+
+
 
         //Flipper
         flipperVersion = '0.99.0'
