@@ -1,6 +1,5 @@
 package com.example.weatherapp.weather.flow
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.weatherapp.common.state.launch
 import com.example.weatherapp.utils.LocationHelper
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class WeatherViewModel(
     private val weatherRepo: WeatherRepository,
-    private val networkStatusListener: NetworkStatusListener,
+    networkStatusListener: NetworkStatusListener,
     locationHelper: LocationHelper
 ) : ViewModel() {
 
@@ -37,10 +36,8 @@ class WeatherViewModel(
     fun getCurrentWeatherForCordinates(latitude: Double, longitude: Double) {
         launch {
             weatherRepo.fetchCurrentWeatherForCordinates(longitude, latitude).collect {
-                Log.d("bbb", "Dobio sam city: ${it.temperature.temperature}")
+                _currentWeather.value = it
             }
         }
     }
-
-
 }

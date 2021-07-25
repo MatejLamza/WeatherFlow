@@ -32,11 +32,11 @@ class NetworkStatusListener(context: Context) {
                 Log.d("bbb", "Lost network")
             }
         }
-        val requrest = NetworkRequest.Builder()
+        val request = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
 
-        connectivityManager.registerNetworkCallback(requrest, networkStatusCallback)
+        connectivityManager.registerNetworkCallback(request, networkStatusCallback)
 
         //This will be triggered when Channel is canceled or closed
         awaitClose {

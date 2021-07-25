@@ -1,8 +1,10 @@
 package com.example.weatherapp.utils
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,11 +23,16 @@ class LocationHelper(private val context: Context) {
 
     private val locationChannel = ConflatedBroadcastChannel<Location>()
 
-    @SuppressLint("MissingPermission")
     private suspend fun setLocation() {
         withContext(IO) {
-            locationClient.lastLocation.addOnSuccessListener {
-                locationChannel.offer(it)
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                locationClient.lastLocation.addOnSuccessListener {
+                    locationChannel.offer(it)
+                }
             }
         }
     }
