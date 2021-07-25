@@ -5,6 +5,7 @@ import com.example.weatherapp.di.Qualifiers
 import com.example.weatherapp.utils.NetworkStatusListener
 import com.example.weatherapp.weather.remote.WeatherAPI
 import com.example.weatherapp.weather.remote.interceptor.AuthInterceptor
+import com.example.weatherapp.weather.remote.interceptor.ResponseInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -28,6 +29,8 @@ val networkModule: Module = module {
 
     single { AuthInterceptor() }
     single(Qualifiers.apiFullUrl) { BuildConfig.API_URL }
+    single { ResponseInterceptor(flipperInitializer = get(), gson = get()) }
+
 
 
     single {
@@ -35,6 +38,7 @@ val networkModule: Module = module {
             .newBuilder()
             .readTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(get<AuthInterceptor>())
+            .addNetworkInterceptor(get<ResponseInterceptor>())
             .build()
     }
 

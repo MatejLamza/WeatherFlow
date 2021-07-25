@@ -72,6 +72,10 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitSerializationVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation "com.github.salomonbrys.kotson:kotson:$kotsonVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingVersion"
+
+
 
     //Flipper
     debugImplementation "com.facebook.flipper:flipper:$flipperVersion"

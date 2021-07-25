@@ -24,15 +24,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchLocation" />
 
-
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/weatherContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:cardCornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weatherLabel">
+        app:layout_constraintTop_toBottomOf="@id/weatherLabel"
+        tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -92,14 +93,38 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!--<TextView
-        android:id="@+id/testMessage"
+
+    <TextView
+        android:id="@+id/noInternetConnectionTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        app:layout_constraintTop_toBottomOf="@id/searchLocation"
+        android:gravity="center"
+        android:text="No Internet Connection"
+        android:textSize="21sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Test info" />-->
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/noInternetConnectionMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Please double-check your internet connection and try again."
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noInternetConnectionTitle" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/myLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_baseline_my_location_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,5 @@ class WeatherApplication : Application() {
         super.onCreate()
         weatherAppDI.initialize()
         get<FlipperInitializer>().initialize()
-
     }
 }
