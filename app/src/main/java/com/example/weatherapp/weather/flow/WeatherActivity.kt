@@ -9,9 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.common.mvvm.BaseActivity
 import com.example.weatherapp.common.state.observe
+import com.example.weatherapp.utils.extensions.toCelsiusString
 import com.example.weatherapp.weather.domain.PermissionException
 import com.github.florent37.runtimepermission.kotlin.coroutines.experimental.askPermission
 import kotlinx.android.synthetic.main.activity_weather.*
@@ -71,12 +73,18 @@ class WeatherActivity : BaseActivity() {
         weatherViewModel.updateCurrentLocation.observe(this) {}
         weatherViewModel.currentWeather.observe(this) { city ->
             locationName.text = city.locationName
-            temperature.text = city.temperature.temperature.toString()
+            temperature.text = city.temperature.temperature.toCelsiusString()
             description.text = city.weather.description
             maxMinTemperature.text =
-                "${city.temperature.temperatureMax} / ${city.temperature.temperatureMin}"
+                "${city.temperature.temperatureMax.toCelsiusString()} / ${city.temperature.temperatureMin.toCelsiusString()}"
             feelsLike.text =
-                getString(R.string.temperature_feels_like, city.temperature.feelsLike.toString())
+                getString(
+                    R.string.temperature_feels_like,
+                    city.temperature.feelsLike.toCelsiusString()
+                )
+            Glide.with(this)
+                .load("https://openweathermap.org/img/wn/${city.weather.icon}@2x.png")
+                .into(weatherIcon)
         }
         weatherViewModel.state.observe(this, this, onError = {
             when (it) {

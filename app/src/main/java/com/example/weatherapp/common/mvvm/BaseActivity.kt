@@ -47,12 +47,17 @@ abstract class BaseActivity : AppCompatActivity(), View {
         }
     }
 
-    override fun showLoading() {}
+    override fun showLoading() {
+        progress.visibility = android.view.View.VISIBLE
+    }
 
     override fun showError(error: Throwable) {
         val message = errorParser.parse(error)
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    override fun dismissLoading() {}
+    override fun dismissLoading() {
+        progress.visibility = android.view.View.GONE
+
+    }
 }

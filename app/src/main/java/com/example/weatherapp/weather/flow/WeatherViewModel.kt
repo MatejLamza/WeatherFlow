@@ -60,7 +60,7 @@ class WeatherViewModel(
 
         private fun process(loc: Location? = location.value) {
             if (loc != null) {
-                launch {
+                launchWithState(_state) {
                     weatherRepo.fetchCurrentWeatherForCordinates(loc.longitude, loc.longitude)
                         .collect {
                             _currentWeather.value = it
