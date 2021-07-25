@@ -8,9 +8,14 @@ import com.example.weatherapp.weather.flow.WeatherActivity
 
 class NavigationViewModel : ViewModel() {
 
-    fun navigateToApp(source: SplashActivity) {
+    fun navigateToApp(source: SplashActivity, isDeviceConnectedToInternet: Boolean) {
         launch {
-            source.startActivity(Intent(source, WeatherActivity::class.java))
+            source.startActivity(
+                Intent(source, WeatherActivity::class.java).putExtra(
+                    WeatherActivity.IS_CONNECTED_TO_INTERNET,
+                    isDeviceConnectedToInternet
+                )
+            )
             source.finishAffinity()
         }
     }
