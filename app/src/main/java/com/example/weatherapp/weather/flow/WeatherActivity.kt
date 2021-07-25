@@ -61,7 +61,8 @@ class WeatherActivity : BaseActivity() {
             if (isLocationEnabled) {
                 weatherViewModel.refreshLocation()
             } else {
-                Toast.makeText(this, "Please turn on your Location", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.turn_on_your_location), Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -74,7 +75,8 @@ class WeatherActivity : BaseActivity() {
             description.text = city.weather.description
             maxMinTemperature.text =
                 "${city.temperature.temperatureMax} / ${city.temperature.temperatureMin}"
-            feelsLike.text = "Feels like: ${city.temperature.feelsLike}"
+            feelsLike.text =
+                getString(R.string.temperature_feels_like, city.temperature.feelsLike.toString())
         }
         weatherViewModel.state.observe(this, this, onError = {
             when (it) {
@@ -91,7 +93,7 @@ class WeatherActivity : BaseActivity() {
                 else -> {
                     Toast.makeText(
                         this,
-                        "To complete this action please connect to internet and try again",
+                        getString(R.string.turn_on_internet),
                         Toast.LENGTH_LONG
                     ).show()
                     adjustContentVisiblity(false)

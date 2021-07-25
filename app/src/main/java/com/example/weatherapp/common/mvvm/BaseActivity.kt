@@ -3,6 +3,7 @@ package com.example.weatherapp.common.mvvm
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.distinctUntilChanged
+import com.example.weatherapp.R
 import com.example.weatherapp.common.NavigationViewModel
 import com.example.weatherapp.common.state.NetworkStatus
 import com.example.weatherapp.utils.ErrorParser
@@ -36,7 +37,7 @@ abstract class BaseActivity : AppCompatActivity(), View {
             when (status) {
                 is NetworkStatus.NotConnected -> Toast.makeText(
                     this,
-                    "No internet connection",
+                    getString(R.string.no_internet_connection),
                     Toast.LENGTH_LONG
                 ).show()
                 is NetworkStatus.Connected -> {
