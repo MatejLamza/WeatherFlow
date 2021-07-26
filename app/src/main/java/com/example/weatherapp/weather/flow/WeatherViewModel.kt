@@ -44,6 +44,10 @@ class WeatherViewModel(
         launchWithState(_state) {
             weatherRepo.fetchCurrentWeather(city).collect { cityNetwork ->
                 _currentWeather.value = cityNetwork
+                val newLocation = Location("")
+                newLocation.longitude = cityNetwork.cordinates.longitude
+                newLocation.latitude = cityNetwork.cordinates.latitude
+                location.value = newLocation
             }
         }
     }
