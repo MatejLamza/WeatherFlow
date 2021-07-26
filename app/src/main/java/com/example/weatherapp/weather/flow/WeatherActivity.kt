@@ -71,9 +71,6 @@ class WeatherActivity : BaseActivity() {
                     .show()
             }
         }
-        swipeContainer.setOnRefreshListener {
-            swipeContainer.isRefreshing = false
-        }
     }
 
     private fun bind() {

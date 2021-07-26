@@ -23,6 +23,8 @@ abstract class BaseActivity : AppCompatActivity(), View {
     protected fun adjustContentVisiblity(isUserOnline: Boolean) {
         weatherContainer.visibility =
             if (!isUserOnline) android.view.View.GONE else android.view.View.VISIBLE
+        hourlyContainer.visibility =
+            if (!isUserOnline) android.view.View.GONE else android.view.View.VISIBLE
         myLocation.visibility =
             if (!isUserOnline) android.view.View.GONE else android.view.View.VISIBLE
         noInternetConnectionTitle.visibility =

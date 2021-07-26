@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.utils.extensions.toCelsiusString
+import com.example.weatherapp.utils.extensions.toHoursString
 import com.example.weatherapp.weather.domain.HourlyForecast
 import kotlinx.android.synthetic.main.item_hourly_weather.view.*
 
@@ -37,7 +38,7 @@ class HourlyForecastAdapter :
             set(value) {
                 field = value
                 if (value != null) {
-                    itemView.hour.text = value.dt.toString()
+                    itemView.hour.text = value.dt.toHoursString()
                     Glide.with(itemView.context)
                         .load("https://openweathermap.org/img/wn/${value.icon}@2x.png")
                         .into(itemView.hourlyIcon)
