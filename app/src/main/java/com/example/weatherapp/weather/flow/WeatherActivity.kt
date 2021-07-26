@@ -28,6 +28,9 @@ class WeatherActivity : BaseActivity() {
     private val isDeviceConnectedToInternet: Boolean by lazy {
         intent.getBooleanExtra(IS_CONNECTED_TO_INTERNET, false)
     }
+    private val hourlyForecastAdapter: HourlyForecastAdapter by lazy {
+        HourlyForecastAdapter()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,7 @@ class WeatherActivity : BaseActivity() {
     }
 
     private fun setupUI() {
+        initRecyclerView()
         searchLocation.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -66,6 +70,9 @@ class WeatherActivity : BaseActivity() {
                 Toast.makeText(this, getString(R.string.turn_on_your_location), Toast.LENGTH_LONG)
                     .show()
             }
+        }
+        swipeContainer.setOnRefreshListener {
+            swipeContainer.isRefreshing = false
         }
     }
 
@@ -108,5 +115,12 @@ class WeatherActivity : BaseActivity() {
                 }
             }
         }) {}
+        weatherViewModel.hourlyForecast.observe(this) {
+            hourlyForecastAdapter.hourlyForecast = it
+        }
+    }
+
+    private fun initRecyclerView() {
+        hourlyForecastList.adapter = hourlyForecastAdapter
     }
 }

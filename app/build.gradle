@@ -89,6 +89,8 @@ dependencies {
     //UI
     implementation "com.google.android.material:material:$materialVersion"
     implementation "com.google.android:flexbox:$flexboxVersion"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
 
     //Other
     implementation "com.github.florent37:runtime-permission-kotlin:$runtimePermissionsVersion"
