@@ -3,6 +3,7 @@ package com.example.weatherapp.weather.repository
 import com.example.weatherapp.utils.extensions.mapToDomain
 import com.example.weatherapp.weather.domain.City
 import com.example.weatherapp.weather.remote.WeatherAPI
+import com.example.weatherapp.weather.remote.model.HourlyForecastNetwork
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -17,6 +18,15 @@ class WeatherRepositoryImpl(private val weatherAPI: WeatherAPI) : WeatherReposit
         units: String
     ): Flow<City> = flow {
         emit(weatherAPI.fetchCurrentWeatherForCordinates(latitude, longitude, units).mapToDomain())
+    }
+
+    override suspend fun fetchHourlyForecast(
+        longitude: Double,
+        latitude: Double,
+        exclude: String,
+        units: String
+    ): Flow<HourlyForecastNetwork> = flow {
+        emit(weatherAPI.fetchHourlyForecast(latitude, longitude, exclude, units))
     }
 
 }

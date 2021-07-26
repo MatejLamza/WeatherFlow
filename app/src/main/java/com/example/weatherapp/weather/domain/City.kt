@@ -2,9 +2,15 @@ package com.example.weatherapp.weather.domain
 
 data class City(
     val weather: Weather,
+    val cordinates: Cordinates,
     val temperature: Main,
     val time: Long = 0,
     val locationName: String = ""
+)
+
+data class Cordinates(
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0
 )
 
 

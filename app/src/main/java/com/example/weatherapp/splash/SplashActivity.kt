@@ -28,7 +28,7 @@ class SplashActivity : BaseActivity() {
             }.onFailure {
                 Toast.makeText(
                     baseContext,
-                    "In order to get temperature for your current location, please the application location permission",
+                    getString(R.string.permission_reason),
                     Toast.LENGTH_LONG
                 ).show()
             }

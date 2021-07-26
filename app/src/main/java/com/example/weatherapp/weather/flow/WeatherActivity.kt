@@ -9,9 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.common.mvvm.BaseActivity
 import com.example.weatherapp.common.state.observe
+import com.example.weatherapp.utils.extensions.toCelsiusString
 import com.example.weatherapp.weather.domain.PermissionException
 import com.github.florent37.runtimepermission.kotlin.coroutines.experimental.askPermission
 import kotlinx.android.synthetic.main.activity_weather.*
@@ -26,6 +28,9 @@ class WeatherActivity : BaseActivity() {
     private val isDeviceConnectedToInternet: Boolean by lazy {
         intent.getBooleanExtra(IS_CONNECTED_TO_INTERNET, false)
     }
+    private val hourlyForecastAdapter: HourlyForecastAdapter by lazy {
+        HourlyForecastAdapter()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +42,7 @@ class WeatherActivity : BaseActivity() {
     }
 
     private fun setupUI() {
+        initRecyclerView()
         searchLocation.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -61,7 +67,8 @@ class WeatherActivity : BaseActivity() {
             if (isLocationEnabled) {
                 weatherViewModel.refreshLocation()
             } else {
-                Toast.makeText(this, "Please turn on your Location", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.turn_on_your_location), Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -70,11 +77,18 @@ class WeatherActivity : BaseActivity() {
         weatherViewModel.updateCurrentLocation.observe(this) {}
         weatherViewModel.currentWeather.observe(this) { city ->
             locationName.text = city.locationName
-            temperature.text = city.temperature.temperature.toString()
+            temperature.text = city.temperature.temperature.toCelsiusString()
             description.text = city.weather.description
             maxMinTemperature.text =
-                "${city.temperature.temperatureMax} / ${city.temperature.temperatureMin}"
-            feelsLike.text = "Feels like: ${city.temperature.feelsLike}"
+                "${city.temperature.temperatureMax.toCelsiusString()} / ${city.temperature.temperatureMin.toCelsiusString()}"
+            feelsLike.text =
+                getString(
+                    R.string.temperature_feels_like,
+                    city.temperature.feelsLike.toCelsiusString()
+                )
+            Glide.with(this)
+                .load("https://openweathermap.org/img/wn/${city.weather.icon}@2x.png")
+                .into(weatherIcon)
         }
         weatherViewModel.state.observe(this, this, onError = {
             when (it) {
@@ -91,12 +105,19 @@ class WeatherActivity : BaseActivity() {
                 else -> {
                     Toast.makeText(
                         this,
-                        "To complete this action please connect to internet and try again",
+                        getString(R.string.turn_on_internet),
                         Toast.LENGTH_LONG
                     ).show()
                     adjustContentVisiblity(false)
                 }
             }
         }) {}
+        weatherViewModel.hourlyForecast.observe(this) {
+            hourlyForecastAdapter.hourlyForecast = it
+        }
+    }
+
+    private fun initRecyclerView() {
+        hourlyForecastList.adapter = hourlyForecastAdapter
     }
 }

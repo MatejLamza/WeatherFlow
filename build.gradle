@@ -21,8 +21,6 @@ buildscript {
         kotsonVersion = '2.5.0'
         okhttpLoggingVersion = '4.3.1'
 
-
-
         //Flipper
         flipperVersion = '0.99.0'
         soLoaderVersion = '0.10.1'
@@ -33,6 +31,8 @@ buildscript {
 
         //Other
         runtimePermissionsVersion = "1.1.2"
+        glideVersion = '4.11.0'
+
     }
     
     repositories {

@@ -4,6 +4,8 @@ plugins {
 }
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 
 
 android {
@@ -87,9 +89,14 @@ dependencies {
     //UI
     implementation "com.google.android.material:material:$materialVersion"
     implementation "com.google.android:flexbox:$flexboxVersion"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
 
     //Other
     implementation "com.github.florent37:runtime-permission-kotlin:$runtimePermissionsVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
 
 
     testImplementation 'junit:junit:4.+'

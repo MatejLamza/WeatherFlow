@@ -8,7 +8,9 @@ import com.example.weatherapp.common.state.launch
 import com.example.weatherapp.common.state.launchWithState
 import com.example.weatherapp.utils.LocationHelper
 import com.example.weatherapp.utils.NetworkStatusListener
+import com.example.weatherapp.utils.extensions.mapToDomain
 import com.example.weatherapp.weather.domain.City
+import com.example.weatherapp.weather.domain.HourlyForecast
 import com.example.weatherapp.weather.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -31,6 +33,9 @@ class WeatherViewModel(
 
     val location = MutableLiveData<Location>()
 
+    private val _hourlyForecast = MutableLiveData<List<HourlyForecast>>()
+    val hourlyForecast: LiveData<List<HourlyForecast>> = _hourlyForecast
+
     init {
         refreshLocation()
     }
@@ -39,6 +44,10 @@ class WeatherViewModel(
         launchWithState(_state) {
             weatherRepo.fetchCurrentWeather(city).collect { cityNetwork ->
                 _currentWeather.value = cityNetwork
+                val newLocation = Location("")
+                newLocation.longitude = cityNetwork.cordinates.longitude
+                newLocation.latitude = cityNetwork.cordinates.latitude
+                location.value = newLocation
             }
         }
     }
@@ -60,11 +69,16 @@ class WeatherViewModel(
 
         private fun process(loc: Location? = location.value) {
             if (loc != null) {
-                launch {
+                launchWithState(_state) {
                     weatherRepo.fetchCurrentWeatherForCordinates(loc.longitude, loc.longitude)
                         .collect {
                             _currentWeather.value = it
                         }
+                }
+                launch {
+                    weatherRepo.fetchHourlyForecast(loc.longitude, loc.latitude).collect {
+                        _hourlyForecast.value = it.hourlyForecast.take(8).map { it.mapToDomain() }
+                    }
                 }
             }
         }
